@@ -15,6 +15,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "alumno")
 public class Alumno {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idAlumno;

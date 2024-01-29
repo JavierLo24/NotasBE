@@ -17,7 +17,7 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String NombreCurso;
+    private String nombre;
 
     @ManyToOne
     @JoinColumn(name = "profesor_id", nullable = true)

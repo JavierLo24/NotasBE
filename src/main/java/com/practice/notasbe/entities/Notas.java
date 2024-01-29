@@ -11,8 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "curso")
+@Table(name = "notas")
 public class Notas {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idNota;
@@ -25,7 +26,5 @@ public class Notas {
     @JoinColumn(name = "curso_id", nullable = true)
     private Curso idCurso;
 
-    private String unidad;
-
-    private int promedio;
+    private double promedio;
 }
