@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AlumnoRepository  extends JpaRepository<Alumno, Integer>{
+public interface AlumnoRepository extends JpaRepository<Alumno, Integer>{
+    Alumno findByNombres (String name);
 }

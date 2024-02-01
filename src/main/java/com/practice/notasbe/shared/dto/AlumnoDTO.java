@@ -3,7 +3,7 @@ package com.practice.notasbe.shared.dto;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 public class AlumnoDTO {

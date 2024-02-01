@@ -8,9 +8,10 @@ import java.util.Optional;
 
 public interface CursoServiceInterface {
 
-    public List<Curso> listadoDeCursos();
+    public List<CursoDTO> listadoDeCursos();
     public CursoDTO crearCurso(CursoDTO curso);
-    public CursoDTO editCurso(CursoDTO curso, Integer cursoID);
+    public CursoDTO editCurso(Integer cursoID, CursoDTO curso);
     public void eliminarCurso(int id);
     public Optional<Curso> buscarCursoID(int id);
+
 }

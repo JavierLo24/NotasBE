@@ -20,6 +20,6 @@ public class Curso {
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "profesor_id", nullable = true)
+    @JoinColumn(name = "profesor_id", nullable = false)
     private Profesor idProfesor;
 }

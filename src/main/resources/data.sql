@@ -41,6 +41,8 @@ CREATE TABLE IF NOT EXISTS curso (
 -- Create notas table.
 CREATE TABLE IF NOT EXISTS notas (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    nota DOUBLE,
+    descNota VARCHAR(100),
     promedio DOUBLE
     );
 
@@ -70,7 +72,7 @@ VALUES
 ('Janne', 'Doe', '9876543210', 'contento', '3145267894', 'jannedoe@example.com', '4321');
 
 -- Insert data in alumnos table
-INSERT INTO alumno (nombres, apellidos, fechanac, grado, seccion, direccion, telefono, email, password)
+INSERT INTO alumno (nombres, apellidos, fechaNac, grado, seccion, direccion, telefono, email, password)
 VALUES
     ('Juan', 'Perez', '1990-01-15', 'sexto', 'primaria', 'el contento', '3165239847', 'juan@example.com', '1234'),
     ('Maria', 'Gomez', '1985-05-10', 'octavo', 'secundaria', 'barrio blanco', '3125269365', 'maria@example.com', '1236');
@@ -78,11 +80,11 @@ VALUES
 -- Insert data in curso table
 INSERT INTO curso (nombre, profesor_id)
 VALUES
-    ('mates', 0),
-    ('sociales', 1);
+    ('mates', 1),
+    ('sociales', 2);
 
 -- Insert data in notas table
-INSERT INTO notas (alumno_id, curso_id, promedio)
+INSERT INTO notas (alumno_id, curso_id, nota, descNota, promedio)
 VALUES
-    (0, 1, 3.6),
-    (1, 0, 3.0);
+    (1, 1, 0, "", 0),
+    (2, 2, 0, "", 0);

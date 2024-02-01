@@ -16,7 +16,7 @@ public class Notas {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idNota;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "alumno_id", nullable = true)
@@ -26,5 +26,10 @@ public class Notas {
     @JoinColumn(name = "curso_id", nullable = true)
     private Curso idCurso;
 
+    private double nota;
+
+    private String descNota;
+
     private double promedio;
+
 }

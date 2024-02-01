@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface ProfesorServiceInterface {
 
-    public List<Profesor> listadoDeProfes();
+    public List<ProfesorDTO> listadoDeProfes();
     public ProfesorDTO crearProfesor(ProfesorDTO profesor);
-    public ProfesorDTO editProfesor(ProfesorDTO profesor, Integer profeID);
+    public ProfesorDTO editProfesor(Integer profeID, ProfesorDTO profesor);
     public void eliminarProfe(int id);
     public Optional<Profesor> buscarProfeID(int id);
 }

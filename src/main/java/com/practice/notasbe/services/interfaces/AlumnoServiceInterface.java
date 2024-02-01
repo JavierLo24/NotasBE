@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface AlumnoServiceInterface {
 
-    public List<Alumno>listadoDeAlumnos();
-    public AlumnoDTO crearAlumno(AlumnoDTO alumno);
-    public AlumnoDTO editAlumno(AlumnoDTO alumno, Integer alumnoID);
+    public List<AlumnoDTO>listadoDeAlumnos();
+    public AlumnoDTO crearAlumno(AlumnoDTO alumnodto);
+    public AlumnoDTO editAlumno(Integer alumnoID, AlumnoDTO alumnoDto);
     public void eliminarAlumno(int id);
     public Optional<Alumno> buscarAlumnoID(int id);
 }
