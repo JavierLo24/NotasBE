@@ -38,8 +38,8 @@ public class AlumnoService implements AlumnoServiceInterface {
         Alumno alumno = new Alumno();
         BeanUtils.copyProperties(alumnodto, alumno);
         Alumno nuevoAlumno = alumnoRepository.save(alumno);
-        AlumnoDTO newAlumnDto = new AlumnoDTO();
-        BeanUtils.copyProperties(nuevoAlumno, newAlumnDto);
+        AlumnoDTO newAlumnDto = convertToAlumnoDTO(nuevoAlumno);
+//        BeanUtils.copyProperties(nuevoAlumno, newAlumnDto);
         return newAlumnDto;
     }
 
@@ -48,8 +48,8 @@ public class AlumnoService implements AlumnoServiceInterface {
         Alumno alumno = alumnoRepository.findById(alumnoID).orElse(null);
         BeanUtils.copyProperties(alumnoDto, alumno);
         Alumno updatedAlumno = alumnoRepository.save(alumno);
-        AlumnoDTO updatedAlumnoDTO = new AlumnoDTO();
-        BeanUtils.copyProperties(updatedAlumno, updatedAlumnoDTO);
+        AlumnoDTO updatedAlumnoDTO = convertToAlumnoDTO(updatedAlumno);
+//        BeanUtils.copyProperties(updatedAlumno, updatedAlumnoDTO);
         return updatedAlumnoDTO;
     }
 

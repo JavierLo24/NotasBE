@@ -7,6 +7,7 @@ import com.practice.notasbe.repositories.AlumnoRepository;
 import com.practice.notasbe.repositories.CursoRepository;
 import com.practice.notasbe.repositories.NotasRepository;
 import com.practice.notasbe.services.interfaces.NotasServiceInterface;
+import com.practice.notasbe.shared.dto.AlumnoDTO;
 import com.practice.notasbe.shared.dto.NotasDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,27 @@ public class NotasService implements NotasServiceInterface {
     }
 
     @Override
-    public NotasDTO crearNota(NotasDTO nota) {
-        return null;
+    public NotasDTO crearNota(NotasDTO notaDTO) {
+        Notas nota = new Notas();
+        BeanUtils.copyProperties(notaDTO, nota);
+        Notas nuevaNota = notasRepository.save(nota);
+        NotasDTO newNotaDTO = convertToNotasDTO(nuevaNota);
+//        BeanUtils.copyProperties(nuevoAlumno, newAlumnDto);
+        return newNotaDTO;
     }
 
     @Override
-    public NotasDTO editNota(Integer cursoID, NotasDTO nota) {
-        return null;
+    public NotasDTO editNota(Integer notaID, NotasDTO notaDTO) {
+        Notas nota = notasRepository.findById(notaID).orElse(null);
+        BeanUtils.copyProperties(notaDTO, nota);
+        Notas updatedNota = notasRepository.save(nota);
+        NotasDTO updatedNotaDTO = convertToNotasDTO(updatedNota);
+//        BeanUtils.copyProperties(updatedAlumno, updatedAlumnoDTO);
+        return updatedNotaDTO;
+    }
+
+    @Override
+    public void eliminarNota(int id){
+        notasRepository.deleteById(id);
     }
 }

@@ -28,6 +28,7 @@ public class Notas {
 
     private double nota;
 
+    @Column(name = "desc_nota")
     private String descNota;
 
     private double promedio;

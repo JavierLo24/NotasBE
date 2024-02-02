@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS alumno (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombres VARCHAR(255),
     apellidos VARCHAR(255),
-    fechaNac DATE,
+    fecha_nac DATE,
     grado VARCHAR(20),
     seccion VARCHAR(255),
     direccion VARCHAR(50),
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS curso (
 CREATE TABLE IF NOT EXISTS notas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nota DOUBLE,
-    descNota VARCHAR(100),
+    desc_nota VARCHAR(100),
     promedio DOUBLE
     );
 
@@ -72,7 +72,7 @@ VALUES
 ('Janne', 'Doe', '9876543210', 'contento', '3145267894', 'jannedoe@example.com', '4321');
 
 -- Insert data in alumnos table
-INSERT INTO alumno (nombres, apellidos, fechaNac, grado, seccion, direccion, telefono, email, password)
+INSERT INTO alumno (nombres, apellidos, fecha_nac, grado, seccion, direccion, telefono, email, password)
 VALUES
     ('Juan', 'Perez', '1990-01-15', 'sexto', 'primaria', 'el contento', '3165239847', 'juan@example.com', '1234'),
     ('Maria', 'Gomez', '1985-05-10', 'octavo', 'secundaria', 'barrio blanco', '3125269365', 'maria@example.com', '1236');
@@ -84,7 +84,9 @@ VALUES
     ('sociales', 2);
 
 -- Insert data in notas table
-INSERT INTO notas (alumno_id, curso_id, nota, descNota, promedio)
+INSERT INTO notas (alumno_id, curso_id, nota, desc_nota, promedio)
 VALUES
-    (1, 1, 0, "", 0),
-    (2, 2, 0, "", 0);
+    (1, 1, 5, "Actividad 1", 0),
+    (1, 2, 3.5, "Actividad 2", 0),
+    (2, 1, 4.3, "Actividad 1", 0),
+    (2, 2, 2.5, "Actividad 2", 0);

@@ -8,6 +8,7 @@ public interface NotasServiceInterface {
 
     public NotasDTO notasPorAlumno(String alumnoName);
     public List<NotasDTO> notasPorCurso (String curso);
-    public NotasDTO crearNota(NotasDTO nota);
-    public NotasDTO editNota(Integer cursoID, NotasDTO nota);
+    public NotasDTO crearNota(NotasDTO notaDTO);
+    public NotasDTO editNota(Integer notaID, NotasDTO notaDTO);
+    public void eliminarNota(int id);
 }

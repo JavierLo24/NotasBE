@@ -24,6 +24,7 @@ public class Alumno {
 
     private String apellidos;
 
+    @Column(name = "fecha_nac")
     private Date fechaNac;
 
     private String grado;
