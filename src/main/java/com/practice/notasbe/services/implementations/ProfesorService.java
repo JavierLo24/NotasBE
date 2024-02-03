@@ -37,21 +37,17 @@ public class ProfesorService implements ProfesorServiceInterface {
         Profesor profesor = new Profesor();
         BeanUtils.copyProperties(profesorDTO, profesor);
         Profesor nuevoProfe = profesorRepository.save(profesor);
-        ProfesorDTO nuevoProfeDto = new ProfesorDTO();
-        BeanUtils.copyProperties(nuevoProfe, nuevoProfeDto);
-        return nuevoProfeDto;
+        return convertToProfesorDTO(nuevoProfe);
     }
 
     @Override
     public ProfesorDTO editProfesor(Integer profeID, ProfesorDTO profesorDTO){
         Profesor profesor = profesorRepository.findById(profeID).orElse(null);
+        assert profesor != null;
         BeanUtils.copyProperties(profesorDTO, profesor);
         Profesor updatedProfe = profesorRepository.save(profesor);
-        ProfesorDTO updatedProfeDTO = new ProfesorDTO();
-        BeanUtils.copyProperties(updatedProfe, updatedProfeDTO);
-        return updatedProfeDTO;
+        return convertToProfesorDTO(updatedProfe);
     }
-
 
     @Override
     public void eliminarProfe(int id){
@@ -60,11 +56,7 @@ public class ProfesorService implements ProfesorServiceInterface {
 
     @Override
     public Optional<Profesor> buscarProfeID(int id){
-        Optional<Profesor> profesor = profesorRepository.findById(id);
-        return profesor;
+        return profesorRepository.findById(id);
     }
-
-
-
 
 }

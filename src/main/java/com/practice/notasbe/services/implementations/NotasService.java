@@ -3,11 +3,12 @@ package com.practice.notasbe.services.implementations;
 import com.practice.notasbe.entities.Alumno;
 import com.practice.notasbe.entities.Curso;
 import com.practice.notasbe.entities.Notas;
+import com.practice.notasbe.exceptions.ItemAlreadyInUseException;
+import com.practice.notasbe.exceptions.ItemNotFoundException;
 import com.practice.notasbe.repositories.AlumnoRepository;
 import com.practice.notasbe.repositories.CursoRepository;
 import com.practice.notasbe.repositories.NotasRepository;
 import com.practice.notasbe.services.interfaces.NotasServiceInterface;
-import com.practice.notasbe.shared.dto.AlumnoDTO;
 import com.practice.notasbe.shared.dto.NotasDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import java.util.stream.Collectors;
 
 @Service("notasService")
 public class NotasService implements NotasServiceInterface {
+
+    public static final String IS_ALREADY_USE = "The %s is already use";
+    public static final String IS_NOT_FOUND = "The %s is not found";
 
     @Autowired
     NotasRepository notasRepository;
@@ -33,16 +37,17 @@ public class NotasService implements NotasServiceInterface {
     }
 
     @Override
-    public NotasDTO notasPorAlumno(String alumnoName) {
-        Alumno alumno = alumnoRepository.findByNombres(alumnoName);
+    public NotasDTO notasPorAlumno(String nombre, String apellido) throws ItemNotFoundException{
+        Alumno alumno = alumnoRepository.findByNombresAndApellidos(nombre, apellido);
+        if (alumno == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
         Notas notas = notasRepository.findByIdAlumno(alumno);
-        NotasDTO notasDTO = this.convertToNotasDTO(notas);
-        return notasDTO;
+        return this.convertToNotasDTO(notas);
     }
 
     @Override
-    public List<NotasDTO> notasPorCurso(String cursoName) {
+    public List<NotasDTO> notasPorCurso(String cursoName) throws ItemNotFoundException{
         Curso curso = cursoRepository.findByNombre(cursoName);
+        if (curso == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "CURSO").toUpperCase());
         List<Notas> notas = notasRepository.findByIdCurso(curso);
         return notas.stream()
                 .map(this::convertToNotasDTO)
@@ -54,23 +59,22 @@ public class NotasService implements NotasServiceInterface {
         Notas nota = new Notas();
         BeanUtils.copyProperties(notaDTO, nota);
         Notas nuevaNota = notasRepository.save(nota);
-        NotasDTO newNotaDTO = convertToNotasDTO(nuevaNota);
-//        BeanUtils.copyProperties(nuevoAlumno, newAlumnDto);
-        return newNotaDTO;
+        return convertToNotasDTO(nuevaNota);
     }
 
     @Override
-    public NotasDTO editNota(Integer notaID, NotasDTO notaDTO) {
+    public NotasDTO editNota(Integer notaID, NotasDTO notaDTO) throws ItemNotFoundException{
         Notas nota = notasRepository.findById(notaID).orElse(null);
+        if (nota == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "NOTA").toUpperCase());
         BeanUtils.copyProperties(notaDTO, nota);
         Notas updatedNota = notasRepository.save(nota);
-        NotasDTO updatedNotaDTO = convertToNotasDTO(updatedNota);
-//        BeanUtils.copyProperties(updatedAlumno, updatedAlumnoDTO);
-        return updatedNotaDTO;
+        return convertToNotasDTO(updatedNota);
     }
 
     @Override
-    public void eliminarNota(int id){
+    public void eliminarNota(int id) throws ItemNotFoundException{
+        Notas nota = notasRepository.findById(id).orElse(null);
+        if (nota == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "NOTA").toUpperCase());
         notasRepository.deleteById(id);
     }
 }

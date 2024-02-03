@@ -2,6 +2,8 @@ package com.practice.notasbe.services.implementations;
 
 
 import com.practice.notasbe.entities.Alumno;
+import com.practice.notasbe.exceptions.ItemAlreadyInUseException;
+import com.practice.notasbe.exceptions.ItemNotFoundException;
 import com.practice.notasbe.repositories.AlumnoRepository;
 import com.practice.notasbe.services.interfaces.AlumnoServiceInterface;
 import com.practice.notasbe.shared.dto.AlumnoDTO;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 
 @Service("alumnoService")
 public class AlumnoService implements AlumnoServiceInterface {
+
+    public static final String IS_ALREADY_USE = "The %s is already use";
+    public static final String IS_NOT_FOUND = "The %s is not found";
 
     @Autowired
     AlumnoRepository alumnoRepository;
@@ -34,41 +39,43 @@ public class AlumnoService implements AlumnoServiceInterface {
     }
 
     @Override
-    public AlumnoDTO crearAlumno (AlumnoDTO alumnodto){
-        Alumno alumno = new Alumno();
-        BeanUtils.copyProperties(alumnodto, alumno);
-        Alumno nuevoAlumno = alumnoRepository.save(alumno);
-        AlumnoDTO newAlumnDto = convertToAlumnoDTO(nuevoAlumno);
-//        BeanUtils.copyProperties(nuevoAlumno, newAlumnDto);
-        return newAlumnDto;
+    public AlumnoDTO crearAlumno (AlumnoDTO alumnodto) throws ItemAlreadyInUseException{
+        Alumno alumno = alumnoRepository.findByNombresAndApellidos(alumnodto.getNombres(), alumnodto.getApellidos());
+        if (alumno != null) throw new ItemAlreadyInUseException(String.format(IS_ALREADY_USE, "ALUMNO").toUpperCase());
+        Alumno alumno1 = new Alumno();
+        BeanUtils.copyProperties(alumnodto, alumno1);
+        Alumno nuevoAlumno = alumnoRepository.save(alumno1);
+        return convertToAlumnoDTO(nuevoAlumno);
     }
 
     @Override
-    public AlumnoDTO editAlumno(Integer alumnoID, AlumnoDTO alumnoDto){
+    public AlumnoDTO editAlumno(Integer alumnoID, AlumnoDTO alumnoDto) throws ItemNotFoundException{
         Alumno alumno = alumnoRepository.findById(alumnoID).orElse(null);
+        if (alumno == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
         BeanUtils.copyProperties(alumnoDto, alumno);
         Alumno updatedAlumno = alumnoRepository.save(alumno);
-        AlumnoDTO updatedAlumnoDTO = convertToAlumnoDTO(updatedAlumno);
-//        BeanUtils.copyProperties(updatedAlumno, updatedAlumnoDTO);
-        return updatedAlumnoDTO;
+        return convertToAlumnoDTO(updatedAlumno);
     }
 
-
     @Override
-    public void eliminarAlumno(int id){
+    public void eliminarAlumno(int id) throws ItemNotFoundException {
+        Alumno alumno = alumnoRepository.findById(id).orElse(null);
+        if (alumno == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
         alumnoRepository.deleteById(id);
     }
 
     @Override
-    public Optional<Alumno> buscarAlumnoID(int id){
-        Optional<Alumno> alumno = alumnoRepository.findById(id);
+    public Alumno buscarAlumnoID(int id) throws ItemNotFoundException {
+        Alumno alumno = alumnoRepository.findById(id).orElse(null);
+        if (alumno == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
         return alumno;
     }
 
-    public Alumno buscarALumno(String name){
-        Alumno alumno = alumnoRepository.findByNombres(name);
-        return alumno;
+    @Override
+    public Alumno buscarAlumnoName(String nombre, String apellidos) throws ItemNotFoundException{
+        Alumno alumno = alumnoRepository.findByNombresAndApellidos(nombre, apellidos);
+        if (alumno == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
+        return alumnoRepository.findByNombresAndApellidos(nombre, apellidos);
     }
-
 
 }
