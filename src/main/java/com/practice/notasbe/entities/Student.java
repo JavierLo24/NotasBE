@@ -13,29 +13,19 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "alumno")
-public class Alumno {
+@Table(name = "student")
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nombres;
+    private Date date_born;
 
-    private String apellidos;
+    private String school_grade;
 
-    @Column(name = "fecha_nac")
-    private Date fechaNac;
+    @ManyToOne
+    @JoinColumn(name = "users_id", nullable = false)
+    private User user_id;
 
-    private String grado;
-
-    private String seccion;
-
-    private String direccion;
-
-    private String telefono;
-
-    private String email;
-
-    private String password;
 }

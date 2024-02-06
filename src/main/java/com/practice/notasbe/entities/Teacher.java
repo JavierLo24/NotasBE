@@ -11,15 +11,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "curso")
-public class Curso {
+@Table(name = "teacher")
+public class Teacher {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nombre;
+    private String knowledge;
+
+    private String assignment;
 
     @ManyToOne
-    @JoinColumn(name = "profesor_id", nullable = false)
-    private Profesor idProfesor;
+    @JoinColumn(name = "users_id", nullable = false)
+    private User user_id;
 }

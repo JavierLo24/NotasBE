@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.practice</groupId>
-    <artifactId>notas-be</artifactId>
+    <artifactId>grades-be</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>notas-be</name>
-    <description>notas-be</description>
+    <name>grades-be</name>
+    <description>grades-be</description>
     <properties>
         <java.version>17</java.version>
     </properties>

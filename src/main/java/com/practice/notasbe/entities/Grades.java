@@ -11,26 +11,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "notas")
-public class Notas {
+@Table(name = "grades")
+public class Grades {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "alumno_id", nullable = true)
-    private Alumno idAlumno;
+    @JoinColumn(name = "student_id", nullable = true)
+    private Student student_id;
 
     @ManyToOne
-    @JoinColumn(name = "curso_id", nullable = true)
-    private Curso idCurso;
+    @JoinColumn(name = "course_id", nullable = true)
+    private Course course_id;
 
-    private double nota;
+    private double grade;
 
-    @Column(name = "desc_nota")
-    private String descNota;
-
-    private double promedio;
+    private String desc_grade;
 
 }

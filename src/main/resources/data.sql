@@ -1,92 +1,127 @@
 -- -------------------------------------------------------------------------------------------------------------------------
 -- Drop tables before
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS rol;
+DROP TABLE IF EXISTS student;
+DROP TABLE IF EXISTS grades;
+DROP TABLE IF EXISTS teacher;
+DROP TABLE IF EXISTS course;
 
-DROP TABLE IF EXISTS alumno;
-DROP TABLE IF EXISTS notas;
-DROP TABLE IF EXISTS profesor;
-DROP TABLE IF EXISTS curso;
-
--- Create alumnos table.
-CREATE TABLE IF NOT EXISTS alumno (
+-- Create users table.
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombres VARCHAR(255),
-    apellidos VARCHAR(255),
-    fecha_nac DATE,
-    grado VARCHAR(20),
-    seccion VARCHAR(255),
-    direccion VARCHAR(50),
-    telefono VARCHAR(10),
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    address VARCHAR(20),
+    dni VARCHAR(255),
+    cellphone VARCHAR(50),
     email VARCHAR(50),
     password VARCHAR(255)
     );
 
--- Create profesor table.
-CREATE TABLE IF NOT EXISTS profesor (
+CREATE TABLE IF NOT EXISTS rol (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombres VARCHAR(255),
-    apellidos VARCHAR(255),
-    dni VARCHAR(10),
-    direccion VARCHAR(50),
-    telefono VARCHAR(10),
-    email VARCHAR(50),
-    password VARCHAR(255)
+    description VARCHAR(255)
     );
 
--- Create curso table.
-CREATE TABLE IF NOT EXISTS curso (
+-- Create students table.
+CREATE TABLE IF NOT EXISTS student (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255)
+    school_grade VARCHAR(255),
+    date_born DATE
     );
 
--- Create notas table.
-CREATE TABLE IF NOT EXISTS notas (
+-- Create teacher table.
+CREATE TABLE IF NOT EXISTS teacher (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nota DOUBLE,
-    desc_nota VARCHAR(100),
-    promedio DOUBLE
+    knowledge VARCHAR(255),
+    assignment VARCHAR(255)
+    );
+
+-- Create course table.
+CREATE TABLE IF NOT EXISTS course (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+    );
+
+-- Create grades table.
+CREATE TABLE IF NOT EXISTS grades (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    grade DOUBLE,
+    desc_grade VARCHAR(100)
     );
 
 -- ---------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------- CONSTRAINT ABOUT FOREIGN KEY -------------------------------------
 
--- FOREIGN KEY profesor with curso.
-ALTER TABLE curso
-    ADD COLUMN profesor_id INT NOT NULL,
-    ADD CONSTRAINT fk_profesor_id FOREIGN KEY (profesor_id) REFERENCES profesor (id);
+-- FOREIGN KEY rol with user.
+ALTER TABLE users
+    ADD COLUMN rol_id INT NOT NULL,
+    ADD CONSTRAINT fk_rol_id FOREIGN KEY (rol_id) REFERENCES rol (id);
 
--- FOREIGN KEY notas with curso and alumno.
-ALTER TABLE notas
-    ADD COLUMN alumno_id INT NOT NULL,
-    ADD CONSTRAINT fk_alumno_id FOREIGN KEY (alumno_id) REFERENCES alumno (id),
-    ADD COLUMN curso_id INT NOT NULL,
-    ADD CONSTRAINT fk_curso_id FOREIGN KEY (curso_id) REFERENCES curso (id);
+-- FOREIGN KEY user with student.
+ALTER TABLE student
+    ADD COLUMN users_id INT NOT NULL,
+    ADD CONSTRAINT fk_users_id FOREIGN KEY (users_id) REFERENCES users (id);
+
+-- FOREIGN KEY user with teacher.
+ALTER TABLE teacher
+    ADD COLUMN users_id INT NOT NULL,
+    ADD CONSTRAINT fk_users_id FOREIGN KEY (users_id) REFERENCES users (id);
+
+-- FOREIGN KEY teacher with course.
+ALTER TABLE course
+    ADD COLUMN teacher_id INT NOT NULL,
+    ADD CONSTRAINT fk_teacher_id FOREIGN KEY (teacher_id) REFERENCES teacher (id);
+
+-- FOREIGN KEY grades with course and student.
+ALTER TABLE grades
+    ADD COLUMN student_id INT NOT NULL,
+    ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES student (id),
+    ADD COLUMN course_id INT NOT NULL,
+    ADD CONSTRAINT fk_course_id FOREIGN KEY (course_id) REFERENCES course (id);
 
 -- ----------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------- INSERT VALUES  -------------------------------------
--- Insert data in profesor table
-INSERT INTO profesor (nombres, apellidos, dni, direccion, telefono, email, password)
-VALUES
-('John', 'Doe', '1234567890', 'colsag', '3158487963', 'admin@example.com', '1234'),
-('Janne', 'Doe', '9876543210', 'contento', '3145267894', 'jannedoe@example.com', '4321');
 
--- Insert data in alumnos table
-INSERT INTO alumno (nombres, apellidos, fecha_nac, grado, seccion, direccion, telefono, email, password)
+-- Insert data in rol table
+INSERT INTO rol (description)
 VALUES
-    ('Juan', 'Perez', '1990-01-15', 'sexto', 'primaria', 'el contento', '3165239847', 'juan@example.com', '1234'),
-    ('Maria', 'Gomez', '1985-05-10', 'octavo', 'secundaria', 'barrio blanco', '3125269365', 'maria@example.com', '1236');
+    ('STUDENT'),
+    ('TEACHER');
 
--- Insert data in curso table
-INSERT INTO curso (nombre, profesor_id)
+-- Insert data in user table
+INSERT INTO users (email, password, first_name, last_name, address, cellphone, dni, rol_id)
 VALUES
-    ('mates', 1),
-    ('sociales', 2);
+    ( 'admin@example.com', '1234', 'John', 'Doe', 'colsag', '3158487963', '1234567890', 2),
+    ( 'jannedoe@example.com', '4321', 'Janne', 'Doe', 'contento', '3145267894', '9876543210', 2),
+    ( 'juan@example.com', '1234', 'Juan', 'Perez', 'el contento', '3165239847', '10052487986', 1),
+    ( 'maria@example.com', '1236', 'Maria', 'Gomez', 'barrio blanco', '3125269365', '10042582356', 1);
 
--- Insert data in notas table
-INSERT INTO notas (alumno_id, curso_id, nota, desc_nota, promedio)
+-- Insert data in teacher table
+INSERT INTO teacher (knowledge, assignment, users_id)
 VALUES
-    (1, 1, 5, "Actividad 1", 0),
-    (1, 2, 3.5, "Actividad 2", 0),
-    (2, 1, 4.3, "Actividad 1", 0),
-    (2, 2, 2.5, "Actividad 2", 0);
+    ('Matemáticas, Física, Dinámica', 'Décimo y Onces', 1),
+    ('Biología, Química, Ciencias', 'Sexto y Septimo', 2);
+
+-- Insert data in students table
+INSERT INTO student (date_born, school_grade, users_id)
+VALUES
+    ('1990-01-15', 'Sexto', 3),
+    ('1985-05-10', 'Décimo', 4);
+
+-- Insert data in course table
+INSERT INTO course (name, teacher_id)
+VALUES
+    ('Sexto', 2),
+    ('Décimo', 1);
+
+-- Insert data in grades table
+INSERT INTO grades (student_id, course_id, grade, desc_grade)
+VALUES
+    (1, 1, 5, "Actividad 1"),
+    (1, 1, 3.5, "Actividad 2"),
+    (2, 2, 4.3, "Actividad 1"),
+    (2, 2, 2.5, "Actividad 2");
