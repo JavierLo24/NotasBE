@@ -12,5 +12,5 @@ public class StudentDTO {
 
     private String school_grade;
 
-    private User user_id;
+    private User userId;
 }

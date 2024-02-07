@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service("alumnoService")
+@Service("studentService")
 public class StudentService implements StudentServiceInterface {
 
     public static final String IS_ALREADY_USE = "The %s is already use";
@@ -23,48 +23,48 @@ public class StudentService implements StudentServiceInterface {
     @Autowired
     StudentRepository studentRepository;
 
-    private StudentDTO convertToAlumnoDTO(Student student) {
-        StudentDTO alumnoDTO = new StudentDTO();
-        BeanUtils.copyProperties(student, alumnoDTO);
-        return alumnoDTO;
+    private StudentDTO convertToStudentDTO(Student student) {
+        StudentDTO studentDTO = new StudentDTO();
+        BeanUtils.copyProperties(student, studentDTO);
+        return studentDTO;
     }
 
     @Override
-    public List<StudentDTO> listadoDeAlumnos() {
+    public List<StudentDTO> listStudents() {
         List<Student> students = studentRepository.findAll();
         return students.stream()
-                .map(this::convertToAlumnoDTO)
+                .map(this::convertToStudentDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public StudentDTO crearAlumno (StudentDTO alumnodto){
+    public StudentDTO createStudent(StudentDTO studentDTO){
         Student student1 = new Student();
-        BeanUtils.copyProperties(alumnodto, student1);
+        BeanUtils.copyProperties(studentDTO, student1);
         Student nuevoStudent = studentRepository.save(student1);
-        return convertToAlumnoDTO(nuevoStudent);
+        return convertToStudentDTO(nuevoStudent);
     }
 
     @Override
-    public StudentDTO editAlumno(Integer alumnoID, StudentDTO alumnoDto) throws ItemNotFoundException{
+    public StudentDTO editStudent(Integer alumnoID, StudentDTO studentDTO) throws ItemNotFoundException{
         Student student = studentRepository.findById(alumnoID).orElse(null);
-        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
-        BeanUtils.copyProperties(alumnoDto, student);
+        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "STUDENT").toUpperCase());
+        BeanUtils.copyProperties(studentDTO, student);
         Student updatedStudent = studentRepository.save(student);
-        return convertToAlumnoDTO(updatedStudent);
+        return convertToStudentDTO(updatedStudent);
     }
 
     @Override
-    public void eliminarAlumno(int id) throws ItemNotFoundException {
+    public void deleteStudent(int id) throws ItemNotFoundException {
         Student student = studentRepository.findById(id).orElse(null);
-        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
+        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "STUDENT").toUpperCase());
         studentRepository.deleteById(id);
     }
 
     @Override
-    public Student buscarAlumnoID(int id) throws ItemNotFoundException {
+    public Student findByIdStudent(int id) throws ItemNotFoundException {
         Student student = studentRepository.findById(id).orElse(null);
-        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
+        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "STUDENT").toUpperCase());
         return student;
     }
 

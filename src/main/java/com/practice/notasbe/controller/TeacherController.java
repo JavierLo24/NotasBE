@@ -2,6 +2,7 @@ package com.practice.notasbe.controller;
 
 
 import com.practice.notasbe.entities.Teacher;
+import com.practice.notasbe.exceptions.ItemNotFoundException;
 import com.practice.notasbe.services.implementations.TeacherService;
 import com.practice.notasbe.shared.dto.TeacherDTO;
 import com.practice.notasbe.shared.responses.HttpResponse;
@@ -15,45 +16,44 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/profe")
+@RequestMapping("/teacher")
 public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
 
     @GetMapping
-    public ResponseEntity<List<TeacherDTO>> listarProfes(){
-        return new ResponseEntity<>(teacherService.listadoDeProfes(), HttpStatus.OK);
+    public ResponseEntity<List<TeacherDTO>> listTeachers(){
+        return new ResponseEntity<>(teacherService.listTeachers(), HttpStatus.OK);
     }
 
-    @GetMapping("/{profesorId}")
-    public ResponseEntity<Teacher> buscarPorId(@PathVariable Integer profesorId){
-        Optional<Teacher> profePodId = teacherService.buscarProfeID(profesorId);
-        Teacher teacher = profePodId.orElseThrow(() -> new NoSuchElementException("Profesor no encontrado"));
+    @GetMapping("/{teacherId}")
+    public ResponseEntity<Teacher> findById(@PathVariable Integer teacherId)throws ItemNotFoundException {
+        Teacher teacher = teacherService.findByIdTeacher(teacherId);
         return new ResponseEntity<>(teacher,  HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpResponse> createProfe(@RequestBody TeacherDTO teacherDTO) {
-        teacherService.crearProfesor(teacherDTO);
-        return new ResponseEntity<>(new HttpResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED, HttpStatus.CREATED.getReasonPhrase(), "Profesor created successfully"),
+    public ResponseEntity<HttpResponse> createTeacher(@RequestBody TeacherDTO teacherDTO){
+        teacherService.createTeacher(teacherDTO);
+        return new ResponseEntity<>(new HttpResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED, HttpStatus.CREATED.getReasonPhrase(), "Teacer created successfully"),
                 HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{profesorId}")
-    public ResponseEntity<HttpResponse> updateProfe(@PathVariable Integer profesorId, @RequestBody TeacherDTO teacherDTO) {
-        teacherService.editProfesor(profesorId, teacherDTO);
+    @PutMapping("/update/{teacherId}")
+    public ResponseEntity<HttpResponse> updateTeacher(@PathVariable Integer teacherId, @RequestBody TeacherDTO teacherDTO) throws ItemNotFoundException{
+        teacherService.editTeacher(teacherId, teacherDTO);
         return new ResponseEntity<>(
-                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Profesor updated successfully"),
+                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Teacher updated successfully"),
                 HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/delete/{profesorId}")
-    public ResponseEntity<HttpResponse> deleteProfe(@PathVariable Integer profesorId) {
-        teacherService.eliminarProfe(profesorId);
+    @DeleteMapping("/delete/{teacherId}")
+    public ResponseEntity<HttpResponse> deleteTeacher(@PathVariable Integer teacherId) throws ItemNotFoundException{
+        teacherService.deleteTeacher(teacherId);
         return new ResponseEntity<>(
-                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Profesor deleted successfully"),
+                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Teacher deleted successfully"),
                 HttpStatus.OK
         );
     }

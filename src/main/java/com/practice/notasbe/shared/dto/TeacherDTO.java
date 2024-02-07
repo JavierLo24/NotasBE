@@ -10,6 +10,6 @@ public class TeacherDTO {
 
     private String assignment;
 
-    private User user_id;
+    private User userId;
 
 }

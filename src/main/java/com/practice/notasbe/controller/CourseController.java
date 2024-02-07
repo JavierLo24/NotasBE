@@ -21,37 +21,37 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
-    public ResponseEntity<List<CourseDTO>> listarCursos(){
-        return new ResponseEntity<>(courseService.listadoDeCursos(), HttpStatus.OK);
+    public ResponseEntity<List<CourseDTO>> listCourses(){
+        return new ResponseEntity<>(courseService.listCourse(), HttpStatus.OK);
     }
 
-    @GetMapping("/{cursoId}")
-    public ResponseEntity<Course> buscarPorId(@PathVariable Integer cursoId) throws ItemNotFoundException{
-        Course course = courseService.buscarCursoID(cursoId);
+    @GetMapping("/{courseId}")
+    public ResponseEntity<Course> findById(@PathVariable Integer courseId) throws ItemNotFoundException{
+        Course course = courseService.findByIdCourse(courseId);
         return new ResponseEntity<>(course,  HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpResponse> createAlumno(@RequestBody CourseDTO courseDTO) throws ItemAlreadyInUseException {
-        courseService.crearCurso(courseDTO);
-        return new ResponseEntity<>(new HttpResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED, HttpStatus.CREATED.getReasonPhrase(), "Curso created successfully"),
+    public ResponseEntity<HttpResponse> createCourse(@RequestBody CourseDTO courseDTO) throws ItemAlreadyInUseException {
+        courseService.createCourse(courseDTO);
+        return new ResponseEntity<>(new HttpResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED, HttpStatus.CREATED.getReasonPhrase(), "Course created successfully"),
                 HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{cursoId}")
-    public ResponseEntity<HttpResponse> updateAlumno(@PathVariable Integer cursoId, @RequestBody CourseDTO courseDTO) throws ItemNotFoundException {
-        courseService.editCurso(cursoId, courseDTO);
+    @PutMapping("/update/{courseId}")
+    public ResponseEntity<HttpResponse> updateCourse(@PathVariable Integer courseId, @RequestBody CourseDTO courseDTO) throws ItemNotFoundException {
+        courseService.editCourse(courseId, courseDTO);
         return new ResponseEntity<>(
-                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Curso updated successfully"),
+                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Course updated successfully"),
                 HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/delete/{cursoId}")
-    public ResponseEntity<HttpResponse> deleteClient(@PathVariable Integer cursoId) throws ItemNotFoundException{
-        courseService.eliminarCurso(cursoId);
+    @DeleteMapping("/delete/{courseId}")
+    public ResponseEntity<HttpResponse> deleteCourse(@PathVariable Integer courseId) throws ItemNotFoundException{
+        courseService.deleteCourse(courseId);
         return new ResponseEntity<>(
-                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Curso deleted successfully"),
+                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Course deleted successfully"),
                 HttpStatus.OK
         );
     }

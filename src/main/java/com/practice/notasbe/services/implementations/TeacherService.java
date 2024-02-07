@@ -1,6 +1,8 @@
 package com.practice.notasbe.services.implementations;
 
+import com.practice.notasbe.entities.Course;
 import com.practice.notasbe.entities.Teacher;
+import com.practice.notasbe.exceptions.ItemNotFoundException;
 import com.practice.notasbe.repositories.TeacherRepository;
 import com.practice.notasbe.services.interfaces.TeacherServiceInterface;
 import com.practice.notasbe.shared.dto.TeacherDTO;
@@ -12,51 +14,58 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service("profesorService")
+@Service("teacherService")
 public class TeacherService implements TeacherServiceInterface {
+
+    public static final String IS_ALREADY_USE = "The %s is already use";
+    public static final String IS_NOT_FOUND = "The %s is not found";
 
     @Autowired
     TeacherRepository teacherRepository;
 
-    private TeacherDTO convertToProfesorDTO(Teacher teacher) {
+    private TeacherDTO convertToTeacherDTO(Teacher teacher) {
         TeacherDTO teacherDTO = new TeacherDTO();
         BeanUtils.copyProperties(teacher, teacherDTO);
         return teacherDTO;
     }
 
     @Override
-    public List<TeacherDTO> listadoDeProfes() {
-        List<Teacher> profes = teacherRepository.findAll();
-        return profes.stream()
-                .map(this::convertToProfesorDTO)
+    public List<TeacherDTO> listTeachers() {
+        List<Teacher> teacher = teacherRepository.findAll();
+        return teacher.stream()
+                .map(this::convertToTeacherDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public TeacherDTO crearProfesor(TeacherDTO teacherDTO){
+    public TeacherDTO createTeacher(TeacherDTO teacherDTO){
         Teacher teacher = new Teacher();
         BeanUtils.copyProperties(teacherDTO, teacher);
-        Teacher nuevoProfe = teacherRepository.save(teacher);
-        return convertToProfesorDTO(nuevoProfe);
+        Teacher newTeacher = teacherRepository.save(teacher);
+        return convertToTeacherDTO(newTeacher);
     }
 
     @Override
-    public TeacherDTO editProfesor(Integer profeID, TeacherDTO teacherDTO){
-        Teacher teacher = teacherRepository.findById(profeID).orElse(null);
-        assert teacher != null;
+    public TeacherDTO editTeacher(Integer teacherID, TeacherDTO teacherDTO) throws ItemNotFoundException{
+        Teacher teacher = teacherRepository.findById(teacherID).orElse(null);
+        if (teacher == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "TEACHER").toUpperCase());
         BeanUtils.copyProperties(teacherDTO, teacher);
-        Teacher updatedProfe = teacherRepository.save(teacher);
-        return convertToProfesorDTO(updatedProfe);
+        Teacher upTeacher = teacherRepository.save(teacher);
+        return convertToTeacherDTO(upTeacher);
     }
 
     @Override
-    public void eliminarProfe(int id){
+    public void deleteTeacher(int id) throws ItemNotFoundException{
+        Teacher teacher = teacherRepository.findById(id).orElse(null);
+        if (teacher == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "TEACHER").toUpperCase());
         teacherRepository.deleteById(id);
     }
 
     @Override
-    public Optional<Teacher> buscarProfeID(int id){
-        return teacherRepository.findById(id);
+    public Teacher findByIdTeacher(int id) throws ItemNotFoundException{
+        Teacher teacher = teacherRepository.findById(id).orElse(null);
+        if (teacher == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "TEACHER").toUpperCase());
+        return teacher;
     }
 
 }

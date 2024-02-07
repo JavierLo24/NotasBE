@@ -11,7 +11,7 @@ public interface UserServiceInterface {
 
     public List<UserDTO> listUsers();
     public UserDTO createUser(UserDTO userDTO) throws ItemAlreadyInUseException;
-    public UserDTO editUser(Integer userId, UserDTO UserDTO) throws ItemNotFoundException;
+    public UserDTO editUser(Integer userId, UserDTO userDTO) throws ItemNotFoundException;
     public void deleteUser(int id) throws ItemNotFoundException;
     public User findByIDUser(int id) throws ItemNotFoundException;
 

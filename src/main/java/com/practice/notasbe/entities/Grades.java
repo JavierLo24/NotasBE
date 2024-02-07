@@ -20,14 +20,14 @@ public class Grades {
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = true)
-    private Student student_id;
+    private Student studentId;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = true)
-    private Course course_id;
+    private Course courseId;
 
     private double grade;
 
-    private String desc_grade;
+    private String descGrade;
 
 }

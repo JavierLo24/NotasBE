@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface CourseServiceInterface {
 
-    public List<CourseDTO> listadoDeCursos();
-    public CourseDTO crearCurso(CourseDTO curso) throws ItemAlreadyInUseException;
-    public CourseDTO editCurso(Integer cursoID, CourseDTO curso) throws ItemNotFoundException;
-    public void eliminarCurso(int id)  throws ItemNotFoundException;
-    public Course buscarCursoID(int id)  throws ItemNotFoundException;
+    public List<CourseDTO> listCourse();
+    public CourseDTO createCourse(CourseDTO course) throws ItemAlreadyInUseException;
+    public CourseDTO editCourse(Integer courseID, CourseDTO course) throws ItemNotFoundException;
+    public void deleteCourse(int id)  throws ItemNotFoundException;
+    public Course findByIdCourse(int id)  throws ItemNotFoundException;
 
 }

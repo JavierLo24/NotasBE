@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 public class GradesDTO {
-    private Student student_id;
+    private Student studentId;
 
-    private Course course_id;
+    private Course courseId;
 
     private double nota;
 
-    private String desc_nota;
+    private String descNota;
 }

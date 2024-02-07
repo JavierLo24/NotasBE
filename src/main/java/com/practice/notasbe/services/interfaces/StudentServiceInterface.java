@@ -9,10 +9,11 @@ import java.util.List;
 
 public interface StudentServiceInterface {
 
-    public List<StudentDTO> listadoDeAlumnos();
-    public StudentDTO crearAlumno(StudentDTO alumnodto) throws ItemAlreadyInUseException;
-    public StudentDTO editAlumno(Integer alumnoID, StudentDTO alumnoDto) throws ItemNotFoundException;
-    public void eliminarAlumno(int id) throws ItemNotFoundException;
-    public Student buscarAlumnoID(int id) throws ItemNotFoundException;
+    public List<StudentDTO> listStudents();
+    public StudentDTO createStudent(StudentDTO studentDTO) throws ItemAlreadyInUseException;
+    public StudentDTO editStudent(Integer studentId, StudentDTO studentDTO) throws ItemNotFoundException;
+    public void deleteStudent(int id) throws ItemNotFoundException;
+    public Student findByIdStudent(int id) throws ItemNotFoundException;
+
 //    public Student buscarAlumnoName(String nombres, String apellidos) throws ItemNotFoundException;
 }

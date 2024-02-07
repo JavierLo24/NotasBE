@@ -1,18 +1,20 @@
 package com.practice.notasbe.shared.dto;
 
 import com.practice.notasbe.entities.Rol;
+import lombok.Data;
 
+@Data
 public class UserDTO {
 
     private String email;
 
     private String password;
 
-    private Rol rol_id;
+    private Rol rolId;
 
-    private String first_name;
+    private String firstName;
 
-    private String last_name;
+    private String lastName;
 
     private String address;
 

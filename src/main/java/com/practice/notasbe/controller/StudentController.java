@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/alumno")
+@RequestMapping("/student")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
 
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> listarAlumnos(){
-        return new ResponseEntity<>(studentService.listadoDeAlumnos(), HttpStatus.OK);
+    public ResponseEntity<List<StudentDTO>> listStudents(){
+        return new ResponseEntity<>(studentService.listStudents(), HttpStatus.OK);
     }
 
 //    @GetMapping("/nombre={name}-apellido={app}")
@@ -31,33 +31,33 @@ public class StudentController {
 //        return new ResponseEntity<>(student, HttpStatus.OK);
 //    }
 
-    @GetMapping("/id={alumnoId}")
-    public ResponseEntity<Student> buscarPorId(@PathVariable Integer alumnoId) throws ItemNotFoundException {
-        Student student = studentService.buscarAlumnoID(alumnoId);
+    @GetMapping("/id={studentId}")
+    public ResponseEntity<Student> buscarPorId(@PathVariable Integer studentId) throws ItemNotFoundException {
+        Student student = studentService.findByIdStudent(studentId);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpResponse> createAlumno(@RequestBody StudentDTO alumnoDTO) throws ItemAlreadyInUseException {
-        studentService.crearAlumno(alumnoDTO);
-        return new ResponseEntity<>(new HttpResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED, HttpStatus.CREATED.getReasonPhrase(), "Alumno created successfully"),
+    public ResponseEntity<HttpResponse> createAlumno(@RequestBody StudentDTO studentDTO) throws ItemAlreadyInUseException {
+        studentService.createStudent(studentDTO);
+        return new ResponseEntity<>(new HttpResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED, HttpStatus.CREATED.getReasonPhrase(), "Student created successfully"),
                 HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{alumnoId}")
-    public ResponseEntity<HttpResponse> updateAlumno(@PathVariable Integer alumnoId, @RequestBody StudentDTO alumnoDTO) throws ItemNotFoundException{
-        studentService.editAlumno(alumnoId, alumnoDTO);
+    @PutMapping("/update/{studentId}")
+    public ResponseEntity<HttpResponse> updateAlumno(@PathVariable Integer studentId, @RequestBody StudentDTO alumnoDTO) throws ItemNotFoundException{
+        studentService.editStudent(studentId, alumnoDTO);
         return new ResponseEntity<>(
-                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Alumno updated successfully"),
+                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Student updated successfully"),
                 HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/delete/{alumnoId}")
-    public ResponseEntity<HttpResponse> deleteClient(@PathVariable Integer alumnoId) throws ItemNotFoundException {
-        studentService.eliminarAlumno(alumnoId);
+    @DeleteMapping("/delete/{studentId}")
+    public ResponseEntity<HttpResponse> deleteClient(@PathVariable Integer studentId) throws ItemNotFoundException {
+        studentService.deleteStudent(studentId);
         return new ResponseEntity<>(
-                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Alumno deleted successfully"),
+                new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), "Student deleted successfully"),
                 HttpStatus.OK
         );
     }

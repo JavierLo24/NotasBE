@@ -24,5 +24,5 @@ public class Teacher {
 
     @ManyToOne
     @JoinColumn(name = "users_id", nullable = false)
-    private User user_id;
+    private User userId;
 }

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service("cursoService")
+@Service("courseService")
 public class CourseService implements CourseServiceInterface {
 
     public static final String IS_ALREADY_USE = "The %s is already use";
@@ -22,58 +22,58 @@ public class CourseService implements CourseServiceInterface {
     @Autowired
     CourseRepository courseRepository;
 
-    private CourseDTO convertToCursoDTO(Course course) {
+    private CourseDTO convertToCourseDTO(Course course) {
         CourseDTO courseDTO = new CourseDTO();
         BeanUtils.copyProperties(course, courseDTO);
         return courseDTO;
     }
 
     @Override
-    public List<CourseDTO> listadoDeCursos() {
+    public List<CourseDTO> listCourse() {
         List<Course> course = courseRepository.findAll();
         return course.stream()
-                .map(this::convertToCursoDTO)
+                .map(this::convertToCourseDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CourseDTO crearCurso(CourseDTO courseDto) throws ItemAlreadyInUseException {
-        curseNameInUse(courseDto.getName());
+    public CourseDTO createCourse(CourseDTO courseDTO) throws ItemAlreadyInUseException {
+        curseNameInUse(courseDTO.getName());
         Course course = new Course();
-        BeanUtils.copyProperties(courseDto, course);
+        BeanUtils.copyProperties(courseDTO, course);
         Course nuevoCourse = courseRepository.save(course);
-        return convertToCursoDTO(nuevoCourse);
+        return convertToCourseDTO(nuevoCourse);
     }
 
     @Override
-    public CourseDTO editCurso(Integer cursoID, CourseDTO courseDto)  throws ItemNotFoundException{
-        Course course = courseRepository.findById(cursoID).orElse(null);
-        if (course == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "CURSO").toUpperCase());
-        BeanUtils.copyProperties(courseDto, course);
+    public CourseDTO editCourse(Integer courseID, CourseDTO courseDTO)  throws ItemNotFoundException{
+        Course course = courseRepository.findById(courseID).orElse(null);
+        if (course == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "COURSE").toUpperCase());
+        BeanUtils.copyProperties(courseDTO, course);
         Course updatedCourse = courseRepository.save(course);
-        return convertToCursoDTO(updatedCourse);
+        return convertToCourseDTO(updatedCourse);
     }
 
 
     @Override
-    public void eliminarCurso(int id) throws ItemNotFoundException {
+    public void deleteCourse(int id) throws ItemNotFoundException {
         Course course = courseRepository.findById(id).orElse(null);
-        if (course == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "CURSO").toUpperCase());
+        if (course == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "COURSE").toUpperCase());
         courseRepository.deleteById(id);
     }
 
     @Override
-    public Course buscarCursoID(int id) throws ItemNotFoundException {
+    public Course findByIdCourse(int id) throws ItemNotFoundException {
         Course course = courseRepository.findById(id).orElse(null);
-        if (course == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "CURSO").toUpperCase());
+        if (course == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "COURSE").toUpperCase());
         return course;
     }
 
-    private void curseNameInUse (String name) throws ItemAlreadyInUseException {
+    private void curseNameInUse(String name) throws ItemAlreadyInUseException {
         Course course = courseRepository.findByName(name);
         if (course == null) return;
         if (course.getName().equalsIgnoreCase(name))
-            throw new ItemAlreadyInUseException(String.format(IS_ALREADY_USE, "NOMBRE DE CURSO").toUpperCase());
+            throw new ItemAlreadyInUseException(String.format(IS_ALREADY_USE, "COURSE'S NAME").toUpperCase());
     }
 
 }

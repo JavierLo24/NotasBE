@@ -2,11 +2,10 @@ package com.practice.notasbe.entities;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,11 +22,13 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "rol_id", nullable = false)
-    private Rol rol_id;
+    private Rol rolId;
 
-    private String first_name;
+    @Column(name="first_Name")
+    private String firstName;
 
-    private String last_name;
+    @Column(name="last_Name")
+    private String lastName;
 
     private String address;
 
