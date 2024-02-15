@@ -14,6 +14,5 @@ public interface StudentServiceInterface {
     public StudentDTO editStudent(Integer studentId, StudentDTO studentDTO) throws ItemNotFoundException;
     public void deleteStudent(int id) throws ItemNotFoundException;
     public Student findByIdStudent(int id) throws ItemNotFoundException;
-
-//    public Student buscarAlumnoName(String nombres, String apellidos) throws ItemNotFoundException;
+    public StudentDTO findByName(String fName, String lName) throws ItemNotFoundException;
 }

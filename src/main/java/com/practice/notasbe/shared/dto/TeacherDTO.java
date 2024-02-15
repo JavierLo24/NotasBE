@@ -1,6 +1,6 @@
 package com.practice.notasbe.shared.dto;
 
-import com.practice.notasbe.entities.User;
+import com.practice.notasbe.entities.UserE;
 import lombok.Data;
 
 @Data
@@ -10,6 +10,6 @@ public class TeacherDTO {
 
     private String assignment;
 
-    private User userId;
+    private UserE userEId;
 
 }

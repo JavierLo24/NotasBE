@@ -4,6 +4,7 @@ import com.practice.notasbe.entities.Student;
 import com.practice.notasbe.exceptions.ItemAlreadyInUseException;
 import com.practice.notasbe.exceptions.ItemNotFoundException;
 import com.practice.notasbe.services.implementations.StudentService;
+import com.practice.notasbe.services.implementations.UserService;
 import com.practice.notasbe.shared.dto.StudentDTO;
 import com.practice.notasbe.shared.responses.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,11 @@ public class StudentController {
         return new ResponseEntity<>(studentService.listStudents(), HttpStatus.OK);
     }
 
-//    @GetMapping("/nombre={name}-apellido={app}")
-//    public ResponseEntity<Student> buscarname (@PathVariable String name, @PathVariable String app) throws ItemNotFoundException {
-//        Student student = studentService.buscarAlumnoName(name, app);
-//        return new ResponseEntity<>(student, HttpStatus.OK);
-//    }
+    @GetMapping("/name/{fName}/last/{lName}")
+    public ResponseEntity<StudentDTO> findByName (@PathVariable String fName, @PathVariable String lName) throws ItemNotFoundException {
+        StudentDTO studentDTO = studentService.findByName(fName, lName);
+        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+    }
 
     @GetMapping("/id={studentId}")
     public ResponseEntity<Student> buscarPorId(@PathVariable Integer studentId) throws ItemNotFoundException {

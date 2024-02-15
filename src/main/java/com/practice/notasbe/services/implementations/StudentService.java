@@ -2,9 +2,10 @@ package com.practice.notasbe.services.implementations;
 
 
 import com.practice.notasbe.entities.Student;
-import com.practice.notasbe.exceptions.ItemAlreadyInUseException;
+import com.practice.notasbe.entities.UserE;
 import com.practice.notasbe.exceptions.ItemNotFoundException;
 import com.practice.notasbe.repositories.StudentRepository;
+import com.practice.notasbe.repositories.UserRepository;
 import com.practice.notasbe.services.interfaces.StudentServiceInterface;
 import com.practice.notasbe.shared.dto.StudentDTO;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +23,9 @@ public class StudentService implements StudentServiceInterface {
 
     @Autowired
     StudentRepository studentRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     private StudentDTO convertToStudentDTO(Student student) {
         StudentDTO studentDTO = new StudentDTO();
@@ -68,11 +72,13 @@ public class StudentService implements StudentServiceInterface {
         return student;
     }
 
-//    @Override
-//    public Student buscarAlumnoName(String nombre, String apellidos) throws ItemNotFoundException{
-//        Student student = studentRepository.findByNombresAndApellidos(nombre, apellidos);
-//        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
-//        return studentRepository.findByNombresAndApellidos(nombre, apellidos);
-//    }
+    @Override
+    public StudentDTO findByName(String fName, String lName) throws ItemNotFoundException{
+        UserE userE = userRepository.findByFirstNameAndLastName(fName, lName);
+        if (userE == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "USER").toUpperCase());
+        if (userE.getRolId().getDescription() == "STUDENT") throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "STUDENT").toUpperCase());
+        Student student = studentRepository.findByUserId(userE);
+        return convertToStudentDTO(student);
+    }
 
 }

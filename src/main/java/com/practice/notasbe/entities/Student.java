@@ -26,6 +26,6 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "users_id", nullable = false)
-    private User userId;
+    private UserE userEId;
 
 }
