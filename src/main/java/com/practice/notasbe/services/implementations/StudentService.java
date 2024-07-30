@@ -77,7 +77,7 @@ public class StudentService implements StudentServiceInterface {
         UserE userE = userRepository.findByFirstNameAndLastName(fName, lName);
         if (userE == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "USER").toUpperCase());
         if (userE.getRolId().getDescription() == "STUDENT") throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "STUDENT").toUpperCase());
-        Student student = studentRepository.findByUserId(userE);
+        Student student = studentRepository.findByUserEId(userE);
         return convertToStudentDTO(student);
     }
 

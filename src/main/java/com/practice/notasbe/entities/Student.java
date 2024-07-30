@@ -25,7 +25,7 @@ public class Student {
     private String school_grade;
 
     @ManyToOne
-    @JoinColumn(name = "users_id", nullable = false)
+    @JoinColumn(name = "usuarios_id", nullable = false)
     private UserE userEId;
 
 }

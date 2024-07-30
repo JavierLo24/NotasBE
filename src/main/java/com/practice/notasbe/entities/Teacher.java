@@ -23,6 +23,6 @@ public class Teacher {
     private String assignment;
 
     @ManyToOne
-    @JoinColumn(name = "users_id", nullable = false)
+    @JoinColumn(name = "usuarios_id", nullable = false)
     private UserE userEId;
 }

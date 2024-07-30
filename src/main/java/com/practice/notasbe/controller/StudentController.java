@@ -3,6 +3,7 @@ package com.practice.notasbe.controller;
 import com.practice.notasbe.entities.Student;
 import com.practice.notasbe.exceptions.ItemAlreadyInUseException;
 import com.practice.notasbe.exceptions.ItemNotFoundException;
+import com.practice.notasbe.models.request.UsuarioRequest;
 import com.practice.notasbe.services.implementations.StudentService;
 import com.practice.notasbe.services.implementations.UserService;
 import com.practice.notasbe.shared.dto.StudentDTO;
@@ -26,13 +27,13 @@ public class StudentController {
         return new ResponseEntity<>(studentService.listStudents(), HttpStatus.OK);
     }
 
-    @GetMapping("/name/{fName}/last/{lName}")
-    public ResponseEntity<StudentDTO> findByName (@PathVariable String fName, @PathVariable String lName) throws ItemNotFoundException {
-        StudentDTO studentDTO = studentService.findByName(fName, lName);
+    @GetMapping("/findname")
+    public ResponseEntity<StudentDTO> findByName (@RequestBody UsuarioRequest usuarioRequest) throws ItemNotFoundException {
+        StudentDTO studentDTO = studentService.findByName(usuarioRequest.getNombre(), usuarioRequest.getApellido());
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/id={studentId}")
+    @GetMapping("/{studentId}")
     public ResponseEntity<Student> buscarPorId(@PathVariable Integer studentId) throws ItemNotFoundException {
         Student student = studentService.findByIdStudent(studentId);
         return new ResponseEntity<>(student, HttpStatus.OK);
