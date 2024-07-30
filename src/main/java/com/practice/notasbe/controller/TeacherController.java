@@ -22,17 +22,20 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
+    //Buscar todos los profesores
     @GetMapping
     public ResponseEntity<List<TeacherDTO>> listTeachers(){
         return new ResponseEntity<>(teacherService.listTeachers(), HttpStatus.OK);
     }
 
+    //Buscar profesor por ID
     @GetMapping("/{teacherId}")
     public ResponseEntity<Teacher> findById(@PathVariable Integer teacherId)throws ItemNotFoundException {
         Teacher teacher = teacherService.findByIdTeacher(teacherId);
         return new ResponseEntity<>(teacher,  HttpStatus.OK);
     }
 
+    //Crear o registrar un profesor
     @PostMapping("/create")
     public ResponseEntity<HttpResponse> createTeacher(@RequestBody TeacherDTO teacherDTO){
         teacherService.createTeacher(teacherDTO);
@@ -40,6 +43,7 @@ public class TeacherController {
                 HttpStatus.CREATED);
     }
 
+    //Actualizar un profesor
     @PutMapping("/update/{teacherId}")
     public ResponseEntity<HttpResponse> updateTeacher(@PathVariable Integer teacherId, @RequestBody TeacherDTO teacherDTO) throws ItemNotFoundException{
         teacherService.editTeacher(teacherId, teacherDTO);
@@ -49,6 +53,7 @@ public class TeacherController {
         );
     }
 
+    //Eliminar un profesor
     @DeleteMapping("/delete/{teacherId}")
     public ResponseEntity<HttpResponse> deleteTeacher(@PathVariable Integer teacherId) throws ItemNotFoundException{
         teacherService.deleteTeacher(teacherId);

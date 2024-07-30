@@ -31,6 +31,7 @@ public class GradesController {
 //        return new ResponseEntity<>(notas,  HttpStatus.OK);
 //    }
 
+    //Crear nota con actividad
     @PostMapping("/create")
     public ResponseEntity<HttpResponse> createAlumno(@RequestBody GradesDTO notaDTO) {
         gradesService.crearNota(notaDTO);
@@ -38,6 +39,7 @@ public class GradesController {
                 HttpStatus.CREATED);
     }
 
+    //Actualizar nota 
     @PutMapping("/update/{notaID}")
     public ResponseEntity<HttpResponse> updateAlumno(@PathVariable Integer notaID, @RequestBody GradesDTO notaDTO) throws ItemNotFoundException{
         gradesService.editNota(notaID, notaDTO);
@@ -47,6 +49,7 @@ public class GradesController {
         );
     }
 
+    //Eliminar nota
     @DeleteMapping("/delete/{notaID}")
     public ResponseEntity<HttpResponse> deleteClient(@PathVariable Integer notaID) throws ItemNotFoundException {
         gradesService.eliminarNota(notaID);

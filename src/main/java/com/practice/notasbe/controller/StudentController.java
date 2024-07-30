@@ -22,23 +22,27 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    //Buscar todos los estudiantes
     @GetMapping
     public ResponseEntity<List<StudentDTO>> listStudents(){
         return new ResponseEntity<>(studentService.listStudents(), HttpStatus.OK);
     }
 
+    //Buscar estudiante por nombre y apellido
     @GetMapping("/findname")
     public ResponseEntity<StudentDTO> findByName (@RequestBody UsuarioRequest usuarioRequest) throws ItemNotFoundException {
         StudentDTO studentDTO = studentService.findByName(usuarioRequest.getNombre(), usuarioRequest.getApellido());
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
+    //Buscar estudiante por ID
     @GetMapping("/{studentId}")
     public ResponseEntity<Student> buscarPorId(@PathVariable Integer studentId) throws ItemNotFoundException {
         Student student = studentService.findByIdStudent(studentId);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
+    //Crear o registrar un estudiante
     @PostMapping("/create")
     public ResponseEntity<HttpResponse> createAlumno(@RequestBody StudentDTO studentDTO) throws ItemAlreadyInUseException {
         studentService.createStudent(studentDTO);
@@ -46,6 +50,7 @@ public class StudentController {
                 HttpStatus.CREATED);
     }
 
+    //Actualizar un estudiante
     @PutMapping("/update/{studentId}")
     public ResponseEntity<HttpResponse> updateAlumno(@PathVariable Integer studentId, @RequestBody StudentDTO alumnoDTO) throws ItemNotFoundException{
         studentService.editStudent(studentId, alumnoDTO);
@@ -55,6 +60,7 @@ public class StudentController {
         );
     }
 
+    //Eliminar un estudiante
     @DeleteMapping("/delete/{studentId}")
     public ResponseEntity<HttpResponse> deleteClient(@PathVariable Integer studentId) throws ItemNotFoundException {
         studentService.deleteStudent(studentId);

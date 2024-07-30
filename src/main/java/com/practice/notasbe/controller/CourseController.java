@@ -20,17 +20,20 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    //Buscar todos los cursos
     @GetMapping
     public ResponseEntity<List<CourseDTO>> listCourses(){
         return new ResponseEntity<>(courseService.listCourse(), HttpStatus.OK);
     }
 
+    //Buscar curso por ID
     @GetMapping("/{courseId}")
     public ResponseEntity<Course> findById(@PathVariable Integer courseId) throws ItemNotFoundException{
         Course course = courseService.findByIdCourse(courseId);
         return new ResponseEntity<>(course,  HttpStatus.OK);
     }
 
+    //Crear o registrar un curso
     @PostMapping("/create")
     public ResponseEntity<HttpResponse> createCourse(@RequestBody CourseDTO courseDTO) throws ItemAlreadyInUseException {
         courseService.createCourse(courseDTO);
@@ -38,6 +41,7 @@ public class CourseController {
                 HttpStatus.CREATED);
     }
 
+    //Actualizar un curso
     @PutMapping("/update/{courseId}")
     public ResponseEntity<HttpResponse> updateCourse(@PathVariable Integer courseId, @RequestBody CourseDTO courseDTO) throws ItemNotFoundException {
         courseService.editCourse(courseId, courseDTO);
@@ -47,6 +51,7 @@ public class CourseController {
         );
     }
 
+    //Eliminar un curso
     @DeleteMapping("/delete/{courseId}")
     public ResponseEntity<HttpResponse> deleteCourse(@PathVariable Integer courseId) throws ItemNotFoundException{
         courseService.deleteCourse(courseId);
