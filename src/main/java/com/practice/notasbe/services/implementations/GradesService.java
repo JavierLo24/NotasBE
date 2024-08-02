@@ -1,10 +1,13 @@
 package com.practice.notasbe.services.implementations;
 
 import com.practice.notasbe.entities.Grades;
-import com.practice.notasbe.entities.Student;
 import com.practice.notasbe.entities.Course;
+import com.practice.notasbe.entities.Student;
+import com.practice.notasbe.entities.UserE;
 import com.practice.notasbe.exceptions.ItemNotFoundException;
 import com.practice.notasbe.repositories.StudentRepository;
+import com.practice.notasbe.repositories.TeacherRepository;
+import com.practice.notasbe.repositories.UserRepository;
 import com.practice.notasbe.repositories.CourseRepository;
 import com.practice.notasbe.repositories.GradesRepository;
 import com.practice.notasbe.services.interfaces.GradesServiceInterface;
@@ -12,6 +15,7 @@ import com.practice.notasbe.shared.dto.GradesDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +32,10 @@ public class GradesService implements GradesServiceInterface {
     StudentRepository studentRepository;
     @Autowired
     CourseRepository courseRepository;
+    @Autowired
+    TeacherRepository teacherRepository;
+    @Autowired
+    UserRepository userRepository;
 
     private GradesDTO convertToNotasDTO(Grades grades) {
         GradesDTO gradesDTO = new GradesDTO();
@@ -35,23 +43,39 @@ public class GradesService implements GradesServiceInterface {
         return gradesDTO;
     }
 
-//    @Override
-//    public GradesDTO notasPorAlumno(String nombre, String apellido) throws ItemNotFoundException{
-//        Student student = studentRepository.findByNombresAndApellidos(nombre, apellido);
-//        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
-//        Grades grades = gradesRepository.findByStudent_id(student);
-//        return this.convertToNotasDTO(grades);
-//    }
+    @Override
+    public List<GradesDTO> notasPorAlumno(String nombre, String apellido) throws ItemNotFoundException{
+        UserE user = userRepository.findByFirstNameAndLastName(nombre, apellido);
+        if (user == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "USUARIO").toUpperCase());
+        Student student = studentRepository.findByUserEId(user);
+        if (student == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "ALUMNO").toUpperCase());
+        List<Grades> grades = gradesRepository.findByStudentId(student);
+        return grades.stream().map(grade -> {
+            GradesDTO gradesDTO = new GradesDTO();
+            BeanUtils.copyProperties(grade, gradesDTO);
+            gradesDTO.setCourseName(grade.getCourseId().getName());
+            gradesDTO.setCourseTeacher(grade.getCourseId().getTeacherId().getUserEId().getFirstName());
+            gradesDTO.setStudentName(grade.getStudentId().getUserEId().getFirstName());
+            gradesDTO.setStudentLastName(grade.getStudentId().getUserEId().getLastName());
+            return gradesDTO;
+        }).collect(Collectors.toList());
+    }
 
-//    @Override
-//    public List<GradesDTO> notasPorCurso(String cursoName) throws ItemNotFoundException{
-//        Course course = courseRepository.findByName(cursoName);
-//        if (course == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "CURSO").toUpperCase());
-//        List<Grades> notas = gradesRepository.findByCourse_id(course);
-//        return notas.stream()
-//                .map(this::convertToNotasDTO)
-//                .collect(Collectors.toList());
-//    }
+    @Override
+    public List<GradesDTO> notasPorCurso(String cursoName) throws ItemNotFoundException{
+        Course course = courseRepository.findByName(cursoName);
+        if (course == null) throw new ItemNotFoundException(String.format(IS_NOT_FOUND, "CURSO").toUpperCase());
+        List<Grades> grades = gradesRepository.findByCourseId(course);
+        return grades.stream().map(grade -> {
+            GradesDTO gradesDTO = new GradesDTO();
+            BeanUtils.copyProperties(grade, gradesDTO);
+            gradesDTO.setCourseName(grade.getCourseId().getName());
+            gradesDTO.setCourseTeacher(grade.getCourseId().getTeacherId().getUserEId().getFirstName());
+            gradesDTO.setStudentName(grade.getStudentId().getUserEId().getFirstName());
+            gradesDTO.setStudentLastName(grade.getStudentId().getUserEId().getLastName());
+            return gradesDTO;
+        }).collect(Collectors.toList());
+    }
 
     @Override
     public GradesDTO crearNota(GradesDTO notaDTO) {

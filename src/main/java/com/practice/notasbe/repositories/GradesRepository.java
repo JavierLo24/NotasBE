@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface GradesRepository extends JpaRepository<Grades, Integer>{
-//    Grades findByStudent_id (Student idStudent);
-//    List<Grades> findByCourse_id (Course course);
+    List<Grades> findByStudentId(Student studentId);
+    List<Grades> findByCourseId(Course courseId);
 }

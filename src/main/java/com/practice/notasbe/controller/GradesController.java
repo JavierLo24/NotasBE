@@ -19,17 +19,17 @@ public class GradesController {
     @Autowired
     GradesService gradesService;
 
-//    @GetMapping("/nombre={nombre}-apellido={apellido}")
-//    public ResponseEntity<GradesDTO> buscarPorAlumno(@PathVariable String nombre, @PathVariable String apellido) throws ItemNotFoundException{
-//        GradesDTO notas = gradesService.notasPorAlumno(nombre, apellido);
-//        return new ResponseEntity<>(notas,  HttpStatus.OK);
-//    }
+    @GetMapping("/nombre={nombre}-apellido={apellido}")
+    public ResponseEntity<List<GradesDTO>> buscarPorAlumno(@PathVariable String nombre, @PathVariable String apellido) throws ItemNotFoundException{
+        List<GradesDTO> notas = gradesService.notasPorAlumno(nombre, apellido);
+        return new ResponseEntity<>(notas,  HttpStatus.OK);
+    }
 
-//    @GetMapping("/curso/{cursoName}")
-//    public ResponseEntity<List<GradesDTO>> buscarPorCurso(@PathVariable String cursoName) throws ItemNotFoundException{
-//        List<GradesDTO> notas = gradesService.notasPorCurso(cursoName);
-//        return new ResponseEntity<>(notas,  HttpStatus.OK);
-//    }
+    @GetMapping("/curso/{cursoName}")
+    public ResponseEntity<List<GradesDTO>> buscarPorCurso(@PathVariable String cursoName) throws ItemNotFoundException{
+        List<GradesDTO> notas = gradesService.notasPorCurso(cursoName);
+        return new ResponseEntity<>(notas,  HttpStatus.OK);
+    }
 
     //Crear nota con actividad
     @PostMapping("/create")
